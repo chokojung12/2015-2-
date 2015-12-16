@@ -1,0 +1,45 @@
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <error.h>
+#include <unistd.h>
+#include <stdio.h>
+
+#define BUFSIZE 512;
+
+int main(){
+	int afile_fd;
+	int bfile_fd;
+	char read_file[] = "afile";
+	char write_file[] = "bfile";
+	char *buf2;
+	ssize_t read_size;
+	ssize_t write_size;
+	
+
+	buf2 = (char *)malloc(512);
+
+	if((afile_fd = open(read_file,O_RDONLY)) == -1){
+		perror("afile open failed\n");
+	}
+	else{
+		if((bfile_fd = open(write_file, O_WRONLY)) == -1){
+			close(afile_fd);
+			perror("bfile open failed\n");
+		}
+		else{
+			while((read_size = read(afile_fd, buf2, BUFSIZE)) > 0){
+				write(bfile_fd, buf2, strlen(buf2));
+				if(read_size == BUFSIZE){
+					free(buf2);
+					buf2 =(char *)malloc(512);
+				}
+			}
+		}
+		
+		close(afile_fd);
+		close(bfile_fd);
+	}
+	return 0;
+}

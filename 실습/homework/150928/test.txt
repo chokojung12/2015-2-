@@ -1,0 +1,7 @@
+Computer Science and Engineering
+Myong Ji University
+Subject: system programming
+Professor: Hyuk-Soo Jang
+
+Test Data for size.c file
+used to compute the size of the test.txt in /tmp directory
